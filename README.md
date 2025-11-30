@@ -7,16 +7,17 @@ OSSW-HW02-README-20231709
 
 ***
 
-## 1. 목차
-1. **top**
-    - 기본 설명과 형식
-    - 옵션
-    - 예제
-    - 관련 vimgolf 문제
-3. **ps**
-4. **jobs**
-5. **kill**
-6. **명령어 요약 표**
+## 목차
+1. 명령어 설명
+    1) top
+       - 기본 설명과 형식
+       - 옵션
+       - 예제
+    3) ps
+    4) jobs
+    5) kill   
+2. 명령어 요약 표
+3. 실전 연습 문제 (SadServers)
 
 ***
 
@@ -54,11 +55,6 @@ KiB Mem :  8000000 total,  4000000 free,  2000000 used,  2000000 buff/cache
  1234 student   20   0   10000   5000   2000 S   0.5  0.1   0:01.50 python3
 ```
 
-**4. 관련 VimGolf 문제**
-*   **제목**: Sort and Tag (라인 정렬하기)
-*   **설명**: 로그나 프로세스 리스트를 특정 기준(CPU, 메모리 등)으로 정렬하는 상황과 유사하다. 텍스트 파일 내용을 특정 컬럼 기준으로 정렬하는 연습에 좋다.
-*   **링크**: [VimGolf - Sort and Tag](http://www.vimgolf.com/challenges/5d6e8d7d694165000c6547e8)
-
 ***
 
 ### 2) ps - 프로세스 스냅샷 확인
@@ -86,11 +82,6 @@ $ ps aux | grep python
 root      1234  0.0  0.1  50000  2000 ?        Ss   10:00   0:00 /usr/bin/python3 system_daemon.py
 student   5678  1.5  2.3 120000 40000 pts/0    S+   13:00   0:05 python3 my_script.py
 ```
-
-**4. 관련 VimGolf 문제**
-*   **제목**: Swap columns (컬럼 위치 바꾸기)
-*   **설명**: `ps` 명령어의 출력 결과에서 PID나 프로세스 이름 등 특정 컬럼만 추출하거나 위치를 바꿀 때 유용한 기술이다. `awk`를 쓰지 않고 Vim으로 편집할 때 사용된다.
-*   **링크**: [VimGolf - Swap columns](http://www.vimgolf.com/challenges/5326040b29082d0002000006)
 
 ***
 
@@ -123,11 +114,6 @@ $ jobs
 [1]+  Running                 sleep 500 &
 ```
 
-**4. 관련 VimGolf 문제**
-*   **제목**: Reformat list to array (리스트 포맷 변환)
-*   **설명**: `jobs`의 출력 결과나 여러 작업 리스트를 프로그래밍 언어의 배열(Array) 형태로 변환하는 상황을 연습할 수 있다.
-*   **링크**: [VimGolf - Reformat list to array](http://www.vimgolf.com/challenges/54a8998c5030e5000902e866)
-
 ***
 
 ### 4) kill - 프로세스 시그널 전송
@@ -155,11 +141,6 @@ $ kill -9 1234
 ```
 > **주의:** `kill -9`는 최후의 수단으로 사용해야 한다.
 
-**4. 관련 VimGolf 문제**
-*   **제목**: Delete lines matching pattern (특정 패턴 삭제)
-*   **설명**: 수많은 프로세스 리스트 중에서 특정 패턴(예: 종료해야 할 좀비 프로세스)을 가진 라인만 빠르게 삭제하거나 명령어로 바꾸는 연습이다.
-*   **링크**: [VimGolf - Delete lines matching pattern](http://www.vimgolf.com/challenges/5d79a75d694165000c654856)
-
 ***
 
 ## 3. 표 (명령어 한 눈에 보기)
@@ -171,6 +152,53 @@ $ kill -9 1234
 | **jobs** | **작업(Job)** 제어 | 셸 내부 명령어, 백그라운드 관리 | 실행 중인 작업을 잠깐 멈추거나 배경으로 보낼 때 |
 | **kill** | **시그널** 전송 | PID 필요, 정상/강제 종료 구분 | 응답 없는 프로그램 종료, 서비스 재시작 신호 |
 
-
-
 ***
+
+## 4. 실전 연습 문제 (SadServers)
+각 명령어를 실제 서버 환경에서 연습해볼 수 있는 SadServers 시나리오이다.
+
+### 1) top & kill 실습
+문제 제목: "Saint John": what is writing to this log file?
+
+링크: SadServers - Saint John 시나리오
+
+문제 설명:
+어떤 프로세스가 /var/log/bad.log 파일에 끊임없이 로그를 쓰고 있어서 디스크가 가득 차는 상황이다. top 등으로 시스템 상황을 파악하고, 범인 프로세스를 찾아 kill 명령어로 종료시켜야 한다.
+
+해결 방법 (Solution):
+
+top 명령어를 입력해 현재 CPU를 많이 쓰는 프로세스가 있는지 확인한다 (보통 상단에 badlog.py 같은 이름이 뜬다).
+
+또는 lsof /var/log/bad.log 명령어로 해당 파일을 잡고 있는 프로세스의 PID를 찾는다.
+
+찾아낸 PID를 kill [PID] 명령어로 종료시킨다.
+
+bash
+# 예시
+$ top
+$ lsof /var/log/bad.log
+COMMAND   PID USER ...
+python3   621 admin ...
+$ kill 621
+
+
+### 2) ps & jobs 실습
+문제 제목: "Melboune": wsgi with gunicorn
+
+링크: SadServers - Melbourne 시나리오
+
+문제 설명:
+파이썬 웹 서버(Gunicorn)가 자꾸 죽거나 응답하지 않는 상황이다. 서버를 실행할 때 터미널을 차지하지 않게 **백그라운드(&)**로 실행하거나, 서비스(systemd)로 등록하여 관리하는 개념을 익힐 수 있다. 문제 해결 과정에서 ps를 통해 포트 충돌을 확인하는 단계가 포함된다.
+
+해결 방법 (Solution):
+Gunicorn 서버를 올바르게 실행하고 포트 충돌을 해결하는 과정이다.
+
+bash
+# 이미 80번 포트를 쓰고 있는 프로세스 확인 (ps, lsof)
+$ ps aux | grep gunicorn
+# 또는
+$ netstat -nlp | grep 80
+
+# 기존 프로세스 kill 후, 백그라운드로 다시 실행
+$ gunicorn app:app -b 0.0.0.0:80 &
+$ jobs  # 백그라운드 실행 확인
