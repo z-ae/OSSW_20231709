@@ -158,14 +158,17 @@ $ kill -9 1234
 각 명령어를 실제 서버 환경에서 연습해볼 수 있는 SadServers 시나리오이다.
 
 ### 1) top & kill 실습
-문제 제목: "Saint John": what is writing to this log file?
 
-링크: SadServers - Saint John 시나리오
+**1. 문제 제목**
+"Saint John": what is writing to this log file?
 
-문제 설명:
+**2. 링크**
+SadServers - Saint John 시나리오
+
+**3. 문제 설명**
 어떤 프로세스가 /var/log/bad.log 파일에 끊임없이 로그를 쓰고 있어서 디스크가 가득 차는 상황이다. top 등으로 시스템 상황을 파악하고, 범인 프로세스를 찾아 kill 명령어로 종료시켜야 한다.
 
-해결 방법 (Solution):
+**4. 해결 방법 (Solution)**
 
 top 명령어를 입력해 현재 CPU를 많이 쓰는 프로세스가 있는지 확인한다 (보통 상단에 badlog.py 같은 이름이 뜬다).
 
@@ -173,26 +176,29 @@ top 명령어를 입력해 현재 CPU를 많이 쓰는 프로세스가 있는지
 
 찾아낸 PID를 kill [PID] 명령어로 종료시킨다.
 
+```
 bash
-# 예시
 $ top
 $ lsof /var/log/bad.log
 COMMAND   PID USER ...
 python3   621 admin ...
 $ kill 621
-
+```
 
 ### 2) ps & jobs 실습
-문제 제목: "Melboune": wsgi with gunicorn
 
-링크: SadServers - Melbourne 시나리오
+**1. 문제 제목**
+"Melboune": wsgi with gunicorn
 
-문제 설명:
+**2. 링크**
+SadServers - Melbourne 시나리오
+
+**3. 문제 설명**
 파이썬 웹 서버(Gunicorn)가 자꾸 죽거나 응답하지 않는 상황이다. 서버를 실행할 때 터미널을 차지하지 않게 **백그라운드(&)**로 실행하거나, 서비스(systemd)로 등록하여 관리하는 개념을 익힐 수 있다. 문제 해결 과정에서 ps를 통해 포트 충돌을 확인하는 단계가 포함된다.
 
-해결 방법 (Solution):
+**4. 해결 방법 (Solution)**
 Gunicorn 서버를 올바르게 실행하고 포트 충돌을 해결하는 과정이다.
-
+```
 bash
 # 이미 80번 포트를 쓰고 있는 프로세스 확인 (ps, lsof)
 $ ps aux | grep gunicorn
@@ -202,3 +208,4 @@ $ netstat -nlp | grep 80
 # 기존 프로세스 kill 후, 백그라운드로 다시 실행
 $ gunicorn app:app -b 0.0.0.0:80 &
 $ jobs  # 백그라운드 실행 확인
+```
