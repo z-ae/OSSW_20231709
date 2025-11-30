@@ -159,16 +159,16 @@ $ kill -9 1234
 
 ### 1) top & kill 실습
 
-**1. 문제 제목**
+**1. 문제 제목**  
 "Saint John": what is writing to this log file?
 
-**2. 링크**
+**2. 링크**  
 SadServers - Saint John 시나리오
 
-**3. 문제 설명**
+**3. 문제 설명**  
 어떤 프로세스가 /var/log/bad.log 파일에 끊임없이 로그를 쓰고 있어서 디스크가 가득 차는 상황이다. top 등으로 시스템 상황을 파악하고, 범인 프로세스를 찾아 kill 명령어로 종료시켜야 한다.
 
-**4. 해결 방법 (Solution)**
+**4. 해결 방법 (Solution)**  
 
 top 명령어를 입력해 현재 CPU를 많이 쓰는 프로세스가 있는지 확인한다 (보통 상단에 badlog.py 같은 이름이 뜬다).
 
